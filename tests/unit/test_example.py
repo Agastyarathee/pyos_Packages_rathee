@@ -1,20 +1,16 @@
-"""
-A test module that tests your example module.
-
-Some people prefer to write tests in a test file for each function or
-method/ class. Others prefer to write tests for each module. That decision
-is up to you. This test example provides a single test for the example.py
-module.
-"""
-
-from pyospackage_agastya.example import add_numbers
+import pytest
+from pyospackage_agastya.example import add_numbers, calculate_latency
 
 def test_add_numbers():
-    """
-    Test that add_numbers works as expected.
+    """Test that the add_numbers function works."""
+    assert add_numbers(2, 2) == 4
 
-    A single line docstring for tests is generally sufficient.
-    """
-    out = add_numbers(1, 2)
-    expected_out = 3
-    assert  out == expected_out, f"Expected {expected_out} but got {out}"
+def test_calculate_latency():
+    """Test that the latency calculation is correct."""
+    # 0.5 seconds difference should equal 500.0 milliseconds
+    assert calculate_latency(1712930000.0, 1712930000.5) == 500.0
+
+def test_calculate_latency_error():
+    """Test that a ValueError is raised if receive time is before transmit time."""
+    with pytest.raises(ValueError):
+        calculate_latency(1712930000.5, 1712930000.0)
